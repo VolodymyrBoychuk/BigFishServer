@@ -1,26 +1,42 @@
 import { Injectable } from '@nestjs/common';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { FishingSpot } from './entities/fishing-spot.entity';
 import { CreateFishingSpotDto } from './dto/create-fishing-spot.dto';
 import { UpdateFishingSpotDto } from './dto/update-fishing-spot.dto';
 
 @Injectable()
 export class FishingSpotsService {
-  create(createFishingSpotDto: CreateFishingSpotDto) {
-    return 'This action adds a new fishingSpot';
+  constructor(
+    @InjectRepository(FishingSpot)
+    private fishingSpotsRepository: Repository<FishingSpot>,
+  ) {}
+
+  async create(
+    createFishingSpotDto: CreateFishingSpotDto,
+  ): Promise<FishingSpot> {
+    const fishingSpot =
+      this.fishingSpotsRepository.create(createFishingSpotDto);
+    return this.fishingSpotsRepository.save(fishingSpot);
   }
 
-  findAll() {
-    return `This action returns all fishingSpots`;
+  async findAll(): Promise<FishingSpot[]> {
+    return this.fishingSpotsRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} fishingSpot`;
+  async findOne(id: number): Promise<FishingSpot | null> {
+    return this.fishingSpotsRepository.findOne({ where: { id } });
   }
 
-  update(id: number, updateFishingSpotDto: UpdateFishingSpotDto) {
-    return `This action updates a #${id} fishingSpot`;
+  async update(
+    id: number,
+    updateFishingSpotDto: UpdateFishingSpotDto,
+  ): Promise<FishingSpot | null> {
+    await this.fishingSpotsRepository.update(id, updateFishingSpotDto);
+    return this.fishingSpotsRepository.findOne({ where: { id } });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} fishingSpot`;
+  async remove(id: number): Promise<void> {
+    await this.fishingSpotsRepository.delete(id);
   }
 }

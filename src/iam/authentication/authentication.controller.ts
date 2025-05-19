@@ -5,8 +5,10 @@ import { SignUpDto } from './dto/sign-up.dto';
 import { SignInDto } from './dto/sign-in.dto';
 import { Auth } from './decorators/auth.decorator';
 import { AuthType } from './enums/auth-type.enum';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @Auth(AuthType.None)
+@ApiTags('Auth')
 @Controller('authentication')
 export class AuthenticationController {
   // Example function for authentication controller
@@ -15,10 +17,16 @@ export class AuthenticationController {
   constructor(private readonly authService: AuthenticationService) {}
 
   @Post('sign-up')
+  @ApiOperation({ summary: 'Реєстрація нового користувача' })
+  @ApiBody({ type: SignUpDto }) // Вказує структуру тіла запиту
   async signUp(@Body() signUpDto: SignUpDto): Promise<any> {
     return this.authService.signUp(signUpDto);
   }
+
+  //@ApiBearerAuth() // Вказує, що потрібен токен
   @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Авторизація користувача' })
+  @ApiBody({ type: SignInDto }) // Вказує структуру тіла запиту
   @Post('sign-in')
   async signIn(@Body() signInDto: SignInDto): Promise<any> {
     return this.authService.signIn(signInDto);
