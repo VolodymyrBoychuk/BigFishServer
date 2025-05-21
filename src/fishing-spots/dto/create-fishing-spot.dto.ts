@@ -5,32 +5,40 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 import { Season } from '../entities/fishing-spot.entity';
 
 export class CreateFishingSpotDto {
+  @ApiProperty({ description: 'Fishing spot name' })
   @IsString()
   @IsNotEmpty()
-  name: string; // Назва місця риболовлі
+  name: string;
 
+  @ApiProperty({ description: 'Location of the fishing spot' })
   @IsString()
   @IsNotEmpty()
-  location: string; // Локація водойми
+  location: string;
 
+  @ApiProperty({ description: 'Type of water body (lake, river, etc.)' })
   @IsString()
   @IsNotEmpty()
-  type: string; // Тип водойми (озеро, річка)
+  type: string;
 
+  @ApiProperty({ description: 'Fish species found at this spot' })
   @IsString()
   @IsNotEmpty()
-  fishSpecies: string; // Види риби
+  fishSpecies: string;
 
+  @ApiProperty({ description: 'Is access paid or free?' })
   @IsBoolean()
-  isPaid: boolean; // Чи платний доступ
+  isPaid: boolean;
 
+  @ApiProperty({ description: 'Additional description', required: false })
   @IsOptional()
   @IsString()
-  description?: string; // Опис
+  description?: string;
 
+  @ApiProperty({ description: 'Seasonality of the spot', enum: Season })
   @IsEnum(Season)
-  seasonality: Season; // Сезонність
+  seasonality: Season;
 }

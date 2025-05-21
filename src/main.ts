@@ -11,7 +11,7 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Fishing API')
-    .setDescription('Документація API')
+    .setDescription('Documentation API')
     .setVersion('1.0')
     .addBearerAuth(
       {
@@ -20,8 +20,8 @@ async function bootstrap() {
         bearerFormat: 'JWT',
         in: 'header',
       },
-      'access-token', // Назва схеми авторизації
-    ) // Додає поле для авторизації
+      'access-token',
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
