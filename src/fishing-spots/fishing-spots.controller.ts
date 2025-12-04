@@ -44,8 +44,8 @@ export class FishingSpotsController {
   ): Promise<FishingSpot> {
     return this.fishingSpotsService.create(createFishingSpotDto);
   }
-
-  @ApiBearerAuth('access-token') // Requires an access token
+  @Auth(AuthType.None)
+  //@ApiBearerAuth('access-token') // Requires an access token
   @ApiOperation({ summary: 'Retrieve all fishing spots' })
   @ApiResponse({
     status: 200,
